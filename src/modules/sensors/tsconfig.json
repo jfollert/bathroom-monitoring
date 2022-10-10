@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "outDir": "../../../dist/layers/sensors/nodejs/node_modules/@bath-mon/sensors/"
+    },
+	"include": [
+        "./**/*.ts"
+	]
+}

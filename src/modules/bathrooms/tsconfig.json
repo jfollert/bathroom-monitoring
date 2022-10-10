@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "outDir": "../../../dist/layers/bathrooms/nodejs/node_modules/@bath-mon/bathrooms/"
+    },
+	"include": [
+        "./**/*.ts"
+, "application/Add/UserFeedAgregatorts"	]
+}

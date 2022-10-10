@@ -1,0 +1,22 @@
+{
+  "name": "@bath-mon/bathrooms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc -p ./tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simbioticaAI/OTTO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simbioticaAI/OTTO/issues"
+  },
+  "homepage": "https://github.com/simbioticaAI/OTTO#readme",
+  "dependencies": {
+  }
+}

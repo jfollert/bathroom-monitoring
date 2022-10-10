@@ -1,0 +1,31 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"esModuleInterop": true,
+		"target": "es6",
+		"noImplicitAny": true,
+		"moduleResolution": "node",
+		"sourceMap": false,
+		"rootDir": ".",
+		"strict": true,
+		"noEmit": false,
+		"resolveJsonModule": true,
+		"noUnusedLocals": true,
+		"outDir": "./dist",
+		"baseUrl": ".",
+		"skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "declaration": false,
+		"paths": {
+			"@bath-mon/*": ["./src/modules/*"]
+		}
+  	},
+  	"include": [
+		"src/apps/backend/**/**.ts"
+	],
+  	"exclude": [
+		"node_modules",
+		"src/modules",
+		"tests"
+	]
+}

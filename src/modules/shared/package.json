@@ -1,0 +1,24 @@
+{
+  "name": "@bath-mon/shared",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc -p ./tsconfig.json && npm run copy:uuid",
+	"copy:uuid": "copy '../../../node_modules/uuid/**' ../../../dist/layers/shared/nodejs/node_modules/uuid/"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simbioticaAI/OTTO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simbioticaAI/OTTO/issues"
+  },
+  "homepage": "https://github.com/simbioticaAI/OTTO#readme",
+  "description": "",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}
