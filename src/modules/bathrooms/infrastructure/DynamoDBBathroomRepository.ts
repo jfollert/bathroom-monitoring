@@ -17,6 +17,7 @@ export class DynamoDBBathroomRepository implements BathroomRepository {
 		const persistedPatient = {
 			PK 		: 	`BATHROOM`,
 			SK 		: 	`BATHROOM#${bathroom.id}`,
+			id: bathroom.id,
 			floor: bathroom.floor,
 			building: bathroom.building,
 		};
