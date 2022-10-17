@@ -15,5 +15,13 @@ export class Bathroom {
 		this.floor = floor;
 	}
 
+	toPrimitives(): BathroomPrimitives {
+		return {
+			id: this.id,
+			building: this.building,
+			floor: this.floor
+		}
+	}
+
 	
 }

@@ -17,9 +17,7 @@ export class DynamoDBBathroomRepository implements BathroomRepository {
 		const persistedPatient = {
 			PK 		: 	`BATHROOM`,
 			SK 		: 	`BATHROOM#${bathroom.id}`,
-			id: bathroom.id,
-			floor: bathroom.floor,
-			building: bathroom.building,
+			...bathroom.toPrimitives()
 		};
 
 		const response = await dynamo.put({
@@ -32,5 +30,34 @@ export class DynamoDBBathroomRepository implements BathroomRepository {
 
 		console.log('Bathroom saved!')
 	}
+
+	async findAll(): Promise<Bathroom[]> {
+		console.log('Find all bathrooms');
+
+		const response = await dynamo.query({
+			TableName: this.tableName,
+			KeyConditionExpression: 'PK = :pk',
+			ExpressionAttributeValues: {
+				':pk': 'BATHROOM'
+			}
+		}).promise();
+
+		console.log('response:', response);
+
+		if (!response.Items) {
+			return [];
+		}
+
+		const bathrooms = response?.Items.map(item => new Bathroom({
+			id: item.id,
+			floor: item.floor,
+			building: item.building
+		}));
+
+		console.log('bathrooms:', bathrooms);
+
+		return bathrooms;
+	}
+
 
 }
