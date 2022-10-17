@@ -11,12 +11,7 @@ export class BathroomUpdater {
 
 	async run(request: UpdateBathroomRequest): Promise<void> {
 		console.log('request:', request);
-
-		const bathroom = new Bathroom({
-			id: request.id,
-			floor: request.floor,
-		})
-
+		const bathroom = new Bathroom(request);
 		return await this.repository.save(bathroom);
 	}
 }

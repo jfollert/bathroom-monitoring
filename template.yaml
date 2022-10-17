@@ -16,7 +16,7 @@ Globals:
         STAGE: !Ref StageName
 
 Resources:
-  ##### API REST
+  ### API REST
   ResourcesApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -34,9 +34,14 @@ Resources:
       Runtime: nodejs14.x
       CodeUri: dist/src/apps/backend/lambdas/bathrooms/Update
       Handler: UpdateBathroom.handler
+      Layers:
+        - !Ref BathroomsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref BathroomsTable
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ResourcesTable
+            TableName: !Ref BathroomsTable
       Events:
         PutExam:
           Type: Api
@@ -51,9 +56,14 @@ Resources:
       Runtime: nodejs14.x
       CodeUri: dist/src/apps/backend/lambdas/bathrooms/Find
       Handler: FindBathroom.handler
+      Layers:
+        - !Ref BathroomsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref BathroomsTable
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ResourcesTable
+            TableName: !Ref BathroomsTable
       Events:
         PutExam:
           Type: Api
@@ -63,10 +73,10 @@ Resources:
             Method: GET
 
   ### DynamoDB
-  ResourcesTable:
+  BathroomsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub resources-${AWS::StackName}
+      TableName: !Sub ${AWS::StackName}-bathrooms
       AttributeDefinitions:
         - AttributeName: PK
           AttributeType: S
@@ -78,6 +88,18 @@ Resources:
         - AttributeName: SK
           KeyType: RANGE 
       BillingMode: PAY_PER_REQUEST
+  
+  ### Layer
+  BathroomsLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub ${AWS::StackName}-bathrooms-module
+      Description: Reviewers module library
+      ContentUri: ./dist/layers/bathrooms
+      CompatibleRuntimes:
+        - nodejs14.x
+      LicenseInfo: "MIT"
+      RetentionPolicy: Delete
 
 Outputs:
   StageName:

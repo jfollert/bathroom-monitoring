@@ -18,6 +18,7 @@ export class DynamoDBBathroomRepository implements BathroomRepository {
 			PK 		: 	`BATHROOM`,
 			SK 		: 	`BATHROOM#${bathroom.id}`,
 			floor: bathroom.floor,
+			building: bathroom.building,
 		};
 
 		const response = await dynamo.put({

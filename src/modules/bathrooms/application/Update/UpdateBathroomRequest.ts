@@ -1,4 +1,3 @@
-export type UpdateBathroomRequest = {
-	id: string,
-	floor: number,
-  };
+import { BathroomPrimitives } from "../../domain/Bathroom";
+
+export type UpdateBathroomRequest = BathroomPrimitives;
