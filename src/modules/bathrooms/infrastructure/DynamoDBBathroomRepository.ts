@@ -1,6 +1,7 @@
 import { BathroomRepository } from "../domain/BathroomRepository";
 import { Bathroom, BathroomPrimitives } from "../domain/Bathroom";
 import { DynamoDB } from "aws-sdk";
+import { BathroomId } from "../domain/BathroomId";
 
 const dynamo = new DynamoDB.DocumentClient();
 
@@ -56,5 +57,18 @@ export class DynamoDBBathroomRepository implements BathroomRepository {
 		return bathrooms;
 	}
 
+	async remove(id: BathroomId): Promise<void> {
+		console.log('Remove bathroom:', id);
+
+		const response = await dynamo.delete({
+			TableName: this.tableName,
+			Key: {
+				PK: 'BATHROOM',
+				SK: `BATHROOM#${id}`
+			}
+		}).promise();
+
+		console.log('response:', response);
+	}
 
 }

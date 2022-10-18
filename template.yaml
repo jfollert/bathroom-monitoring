@@ -73,6 +73,30 @@ Resources:
             RestApiId: !Ref ResourcesApi
             Path: /bathrooms
             Method: GET
+  
+  RemoveBathroomFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs14.x
+      CodeUri: dist/src/apps/backend/lambdas/bathrooms/Remove
+      Handler: RemoveBathroom.handler
+      Layers:
+        - !Ref SharedLayer
+        - !Ref BathroomsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref BathroomsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BathroomsTable
+      Events:
+        PutExam:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ResourcesApi
+            Path: /bathrooms/{id}
+            Method: DELETE
+  
 
   ### DynamoDB
   BathroomsTable:
