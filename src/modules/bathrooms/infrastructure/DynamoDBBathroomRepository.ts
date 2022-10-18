@@ -1,5 +1,5 @@
 import { BathroomRepository } from "../domain/BathroomRepository";
-import { Bathroom } from "../domain/Bathroom";
+import { Bathroom, BathroomPrimitives } from "../domain/Bathroom";
 import { DynamoDB } from "aws-sdk";
 
 const dynamo = new DynamoDB.DocumentClient();
@@ -48,11 +48,8 @@ export class DynamoDBBathroomRepository implements BathroomRepository {
 			return [];
 		}
 
-		const bathrooms = response?.Items.map(item => new Bathroom({
-			id: item.id,
-			floor: item.floor,
-			building: item.building
-		}));
+		const bathrooms = response?.Items
+			.map(item => Bathroom.fromPrimitives(item as BathroomPrimitives));
 
 		console.log('bathrooms:', bathrooms);
 

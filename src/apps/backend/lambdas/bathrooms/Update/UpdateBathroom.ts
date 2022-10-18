@@ -55,8 +55,12 @@ export const handler : ProxyHandler = async (event, context) => {
 			statusCode: 200,
 			headers: HEADERS
 		}
-	} catch (error) {
-		console.error(error);
+	} catch (error: any) {
+		console.error('error: ', error);
+		if (error.name = 'InvalidArgumentError') return {
+			statusCode: 400,
+			headers: HEADERS,
+		}
 		return {
 			statusCode: 500,
 			headers: HEADERS

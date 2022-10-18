@@ -18,5 +18,6 @@
   },
   "homepage": "https://github.com/simbioticaAI/OTTO#readme",
   "dependencies": {
+	"@bath-mon/shared": "1.0.0"
   }
 }

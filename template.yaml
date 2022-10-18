@@ -35,6 +35,7 @@ Resources:
       CodeUri: dist/src/apps/backend/lambdas/bathrooms/Update
       Handler: UpdateBathroom.handler
       Layers:
+        - !Ref SharedLayer
         - !Ref BathroomsLayer
       Environment:
         Variables:
@@ -57,6 +58,7 @@ Resources:
       CodeUri: dist/src/apps/backend/lambdas/bathrooms/Find
       Handler: FindBathroom.handler
       Layers:
+        - !Ref SharedLayer
         - !Ref BathroomsLayer
       Environment:
         Variables:
@@ -90,11 +92,22 @@ Resources:
       BillingMode: PAY_PER_REQUEST
   
   ### Layer
+  SharedLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub ${AWS::StackName}-shared-module
+      Description: Shared library
+      ContentUri: ./dist/layers/shared
+      CompatibleRuntimes:
+        - nodejs14.x
+      LicenseInfo: "MIT"
+      RetentionPolicy: Delete
+
   BathroomsLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
       LayerName: !Sub ${AWS::StackName}-bathrooms-module
-      Description: Reviewers module library
+      Description: Bathrooms library
       ContentUri: ./dist/layers/bathrooms
       CompatibleRuntimes:
         - nodejs14.x
@@ -108,4 +121,5 @@ Outputs:
 
   APIURL:
     Value: !Sub https://${ResourcesApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}
+
 

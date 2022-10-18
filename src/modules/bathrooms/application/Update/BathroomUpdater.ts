@@ -11,7 +11,7 @@ export class BathroomUpdater {
 
 	async run(request: UpdateBathroomRequest): Promise<void> {
 		console.log('request:', request);
-		const bathroom = new Bathroom(request);
+		const bathroom = Bathroom.fromPrimitives(request);
 		return await this.repository.save(bathroom);
 	}
 }
