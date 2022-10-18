@@ -50,8 +50,14 @@ export const handler : ProxyHandler = async (event, context) => {
 			statusCode: 200,
 			headers: HEADERS
 		}
-	} catch (error: unknown) {
+	} catch (error: any) {
 		console.error(error);
+		if (error.name === 'NotFoundException') {
+			return {
+				statusCode: 404,
+				headers: HEADERS
+			}
+		}
 		return {
 			statusCode: 500,
 			headers: HEADERS

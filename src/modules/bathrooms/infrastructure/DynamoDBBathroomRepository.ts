@@ -32,6 +32,28 @@ export class DynamoDBBathroomRepository implements BathroomRepository {
 		console.log('Bathroom saved!')
 	}
 
+	async findById(id: BathroomId): Promise<Bathroom | null> {
+		console.log('Find bathroom by id:', id.value);
+		
+		const response = await dynamo.query({
+			TableName: this.tableName,
+			KeyConditionExpression: 'PK = :pk AND SK = :sk',
+			ExpressionAttributeValues: {
+				':pk': 'BATHROOM',
+				':sk': `BATHROOM#${id.value}`
+			}
+		}).promise();
+		console.log('response:', response);
+
+		if (!response.Items || response.Items.length === 0) return null;
+
+		const bathroom = Bathroom.fromPrimitives(response.Items[0] as BathroomPrimitives);
+		console.log('bathroom:', bathroom);
+
+		return bathroom;
+
+	}
+
 	async findAll(): Promise<Bathroom[]> {
 		console.log('Find all bathrooms');
 
