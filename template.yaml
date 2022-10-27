@@ -96,6 +96,75 @@ Resources:
             RestApiId: !Ref ResourcesApi
             Path: /bathrooms/{id}
             Method: DELETE
+
+  UpdateSensorFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs14.x
+      CodeUri: dist/src/apps/backend/lambdas/sensors/Update
+      Handler: UpdateSensor.handler
+      Layers:
+        - !Ref SharedLayer
+        - !Ref SensorsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SensorsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SensorsTable
+      Events:
+        PutExam:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ResourcesApi
+            Path: /sensors/{id}
+            Method: PUT
+  
+  FindSensorsFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs14.x
+      CodeUri: dist/src/apps/backend/lambdas/sensors/Find
+      Handler: FindSensors.handler
+      Layers:
+        - !Ref SharedLayer
+        - !Ref SensorsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SensorsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SensorsTable
+      Events:
+        PutExam:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ResourcesApi
+            Path: /sensors
+            Method: GET
+  
+  RemoveSensorFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs14.x
+      CodeUri: dist/src/apps/backend/lambdas/sensors/Remove
+      Handler: RemoveSensor.handler
+      Layers:
+        - !Ref SharedLayer
+        - !Ref SensorsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SensorsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SensorsTable
+      Events:
+        PutExam:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ResourcesApi
+            Path: /sensors/{id}
+            Method: DELETE
   
 
   ### DynamoDB
@@ -103,6 +172,22 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: !Sub ${AWS::StackName}-bathrooms
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH 
+        - AttributeName: SK
+          KeyType: RANGE 
+      BillingMode: PAY_PER_REQUEST
+  
+  SensorsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-sensors
       AttributeDefinitions:
         - AttributeName: PK
           AttributeType: S
@@ -133,6 +218,17 @@ Resources:
       LayerName: !Sub ${AWS::StackName}-bathrooms-module
       Description: Bathrooms library
       ContentUri: ./dist/layers/bathrooms
+      CompatibleRuntimes:
+        - nodejs14.x
+      LicenseInfo: "MIT"
+      RetentionPolicy: Delete
+  
+  SensorsLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub ${AWS::StackName}-sensors-module
+      Description: Sensors library
+      ContentUri: ./dist/layers/sensors
       CompatibleRuntimes:
         - nodejs14.x
       LicenseInfo: "MIT"
