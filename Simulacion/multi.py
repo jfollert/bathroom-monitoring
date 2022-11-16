@@ -1,7 +1,5 @@
 import subprocess
 
-
-
 cantidad = int(input("Cantidad de simulaciones: "))
 lista = []
 for i in range(cantidad):
@@ -11,4 +9,3 @@ procesos = [subprocess.Popen(["python3", simulacion]) for simulacion in tuple(li
 
 for proceso in procesos:
     proceso.wait()
-
