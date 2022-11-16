@@ -28,6 +28,7 @@ export class SensorRecord {
 		this.value = value;
 	}
 
+	
 	toPrimitives(): SensorRecordPrimitives {
 		return {
 			id: this.id.value,

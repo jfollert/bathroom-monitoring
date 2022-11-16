@@ -6,6 +6,7 @@ import  { Handler,
 import { SensorRecordAggregator } from '@bath-mon/sensors/application/Aggregate/SensorRecordAggregator';
 import { DynamoDBSensorRepository } from "@bath-mon/sensors/infrastructure/DynamoDBSensorRepository";
 import { AggregateSensorRecordRequest } from "@bath-mon/sensors/application/Aggregate/AggregateSensorRecordRequest";
+import { EventBridgeEventBus } from "@bath-mon/shared/infrastructure/EventBridge/EventBridgeEventBus";
 
 const {
 	TABLE_NAME
@@ -42,7 +43,8 @@ export const handler : ProxyHandler = async (event, context) => {
 	const { value } = body;
 
 	const repository = new DynamoDBSensorRepository(TABLE_NAME);
-	const aggregator = new SensorRecordAggregator(repository);
+	const eventBus = new EventBridgeEventBus();
+	const aggregator = new SensorRecordAggregator(repository, eventBus);
 
 	const request: AggregateSensorRecordRequest = {
 		id: recordId,

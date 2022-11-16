@@ -7,6 +7,10 @@ Parameters:
   StageName:
     Type: String
     Default: dev
+  
+  EventBusName:
+    Type: String
+    Default: default
 
 
 Globals:
@@ -181,6 +185,8 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref SensorsTable
+        - EventBridgePutEventsPolicy:
+            EventBusName: !Ref EventBusName
       Events:
         PutExam:
           Type: Api

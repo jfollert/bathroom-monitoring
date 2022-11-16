@@ -1,4 +1,5 @@
 import { NotFoundException } from "@bath-mon/shared/domain/value-object/NotFoundException";
+import { EventBus } from "@bath-mon/shared/domain/EventBus";
 import { Sensor } from "../../domain/Sensor";
 import { SensorId } from "../../domain/SensorId";
 import { SensorRepository } from "../../domain/SensorRepository";
@@ -6,9 +7,11 @@ import { AggregateSensorRecordRequest } from "./AggregateSensorRecordRequest";
 
 export class SensorRecordAggregator {
 	private readonly repository: SensorRepository;
+	private readonly eventBus: EventBus;
 
-	constructor(repository: SensorRepository) {
+	constructor(repository: SensorRepository, eventBus: EventBus) {
 		this.repository = repository;
+		this.eventBus = eventBus;
 	}
 
 	async run(request: AggregateSensorRecordRequest): Promise<void> {
@@ -27,14 +30,13 @@ export class SensorRecordAggregator {
 			value: request.value,
 		};
 
-		const newSensor = Sensor.fromPrimitives({
-			...sensor.toPrimitives(),
-			records: [
-				...sensor.records.toPrimitives(),
-				sensorRecord
-			]
-		})
+		const sensorAggregated = Sensor.aggregate(
+			sensor.toPrimitives(),
+			sensorRecord
+		);
 
-		await this.repository.save(newSensor);
+		await this.eventBus.publish(sensorAggregated.pullDomainEvents());
+
+		await this.repository.save(sensorAggregated);
 	}
 }
