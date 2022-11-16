@@ -30,9 +30,9 @@ export const handler : ProxyHandler = async (event, context) => {
 		headers: HEADERS,
 	};
 
-	const id = event.pathParameters?.id;
+	const sensorId = event.pathParameters?.sensorId;
 
-	if (!id) return {
+	if (!sensorId) return {
 		statusCode: 400,
 		headers: HEADERS,
 	}
@@ -44,7 +44,7 @@ export const handler : ProxyHandler = async (event, context) => {
 	const updater = new SensorUpdater(repository);
 
 	const request: UpdateSensorRequest = {
-		id,
+		id: sensorId,
 		name
 	}
 

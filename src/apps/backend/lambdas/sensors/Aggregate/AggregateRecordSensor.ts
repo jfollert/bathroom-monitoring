@@ -1,12 +1,11 @@
-import { SensorRemover } from "@bath-mon/sensors/application/Remove/SensorRemover";
-
 import  { Handler,
 	APIGatewayProxyEventV2,
 	APIGatewayProxyResultV2
 } from "aws-lambda";
 
+import { SensorRecordAggregator } from '@bath-mon/sensors/application/Aggregate/SensorRecordAggregator';
 import { DynamoDBSensorRepository } from "@bath-mon/sensors/infrastructure/DynamoDBSensorRepository";
-import { RemoveSensorRequest } from "@bath-mon/sensors/application/Remove/RemoveSensorRequest";
+import { AggregateSensorRecordRequest } from "@bath-mon/sensors/application/Aggregate/AggregateSensorRecordRequest";
 
 const {
 	TABLE_NAME
@@ -22,7 +21,7 @@ const HEADERS = {
 type ProxyHandler = Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2>
 
 export const handler : ProxyHandler = async (event, context) => {
-	console.info('==> Remove Sensors Handler')
+	console.info('==> Update Sensor Handler')
 	console.info('EVENT:', event);
 	console.info('CONTEXT:', context);
 
@@ -32,32 +31,41 @@ export const handler : ProxyHandler = async (event, context) => {
 	};
 
 	const sensorId = event.pathParameters?.sensorId;
+	const recordId = event.pathParameters?.recordId;
 
-	if (!sensorId) return {
+	if (!sensorId || !recordId) return {
 		statusCode: 400,
 		headers: HEADERS,
 	}
 
-	const repository = new DynamoDBSensorRepository(TABLE_NAME);
-	const remover = new SensorRemover(repository);
+	const body = JSON.parse(event.body || '{}');
+	const { value } = body;
 
-	const request: RemoveSensorRequest = {
-		id: sensorId
+	const repository = new DynamoDBSensorRepository(TABLE_NAME);
+	const aggregator = new SensorRecordAggregator(repository);
+
+	const request: AggregateSensorRecordRequest = {
+		id: recordId,
+		ocurredOn: Date.now(),
+		sensorId,
+		value
 	}
 
 	try {
-		await remover.run(request);
+		await aggregator.run(request);
 		return {
 			statusCode: 200,
 			headers: HEADERS
 		}
 	} catch (error: any) {
-		console.error(error);
-		if (error.name === 'NotFoundException') {
-			return {
-				statusCode: 404,
-				headers: HEADERS
-			}
+		console.error('error: ', error);
+		if (error.name == 'InvalidArgumentError') return {
+			statusCode: 400,
+			headers: HEADERS,
+		}
+		if (error.name == 'NotFoundException') return {
+			statusCode: 404,
+			headers: HEADERS,
 		}
 		return {
 			statusCode: 500,

@@ -1,3 +1,4 @@
-import { SensorPrimitives } from "../../domain/Sensor";
-
-export type UpdateSensorRequest = SensorPrimitives;
+export type UpdateSensorRequest = {
+	id: string,
+	name: string
+};

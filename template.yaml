@@ -117,7 +117,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref ResourcesApi
-            Path: /sensors/{id}
+            Path: /sensors/{sensorId}
             Method: PUT
   
   FindSensorsFunction:
@@ -163,8 +163,31 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref ResourcesApi
-            Path: /sensors/{id}
+            Path: /sensors/{sensorId}
             Method: DELETE
+
+  AggregateRecordSensorFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs14.x
+      CodeUri: dist/src/apps/backend/lambdas/sensors/Aggregate
+      Handler: AggregateRecordSensor.handler
+      Layers:
+        - !Ref SharedLayer
+        - !Ref SensorsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SensorsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SensorsTable
+      Events:
+        PutExam:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ResourcesApi
+            Path: /sensors/{sensorId}/records/{recordId}
+            Method: PUT
   
 
   ### DynamoDB
