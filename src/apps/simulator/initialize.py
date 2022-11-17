@@ -1,11 +1,12 @@
 import uuid
 import requests
 import random
+import os
 
 bathrooms = 3
 dispensers_per_bathroom = 2
 
-base_url = "https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev"
+base_url = os.environ.get('API_URL')
 sensors_url = '{base_url}/sensors'.format(base_url=base_url)
 bathrooms_url = '{base_url}/bathrooms'.format(base_url=base_url)
 

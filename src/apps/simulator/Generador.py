@@ -1,11 +1,15 @@
-import json
 import random
 import time
 import uuid
 import requests
 import sys
+import os
 
-url = "https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/"+ str(sys.argv[1])+"/records/"
+base_url = os.environ.get('API_URL')
+sensor_url = '{base_url}/sensors/{sensor_id}/'.format(
+	base_url=base_url,
+	sensor_id=sys.argv[1]
+	)
 
 valor = 5
 
@@ -19,7 +23,7 @@ while(True):
     "value": valor,
     }
     medicion_uuid = uuid.uuid4()
-    respuesta = requests.put(url+str(medicion_uuid), json=medicion)
+    respuesta = requests.put(sensor_url+str(medicion_uuid), json=medicion)
     if valor == 0:
         print("Sensor: " + str(sys.argv[1]), medicion, respuesta )
 

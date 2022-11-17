@@ -6,7 +6,7 @@ Typescript implementation using hexagonal architecture.
 ## Architecture
 ![Architecture Diagram](architecture-diagram.png)
 
-## How to
+## How to Deploy
 ### Configure
 ```bash
 aws configure
@@ -25,4 +25,13 @@ sam build
 ### Deploy
 ```bash
 sam deploy --guided
+```
+
+## How to Simulate
+```bash
+export API_URL=<api-url>
+```
+
+```bash
+python 
 ```
