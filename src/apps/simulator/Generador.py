@@ -5,8 +5,6 @@ import uuid
 import requests
 import sys
 
-
-
 url = "https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/"+ str(sys.argv[1])+"/records/"
 
 valor = 5
