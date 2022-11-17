@@ -33,5 +33,5 @@ export API_URL=<api-url>
 ```
 
 ```bash
-python 
+python3 multi.py
 ```
