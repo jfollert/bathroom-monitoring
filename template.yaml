@@ -124,6 +124,34 @@ Resources:
             Path: /bathrooms/{bathroomId}/dispensers/{dispenserId}
             Method: PUT
 
+  EvaluateSensorRecordFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs14.x
+      CodeUri: dist/src/apps/backend/lambdas/bathrooms/EvaluateRecord
+      Handler: EvaluateRecord.handler
+      Layers:
+        - !Ref SharedLayer
+        - !Ref BathroomsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref BathroomsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BathroomsTable
+      Events:
+        RecordAggregated:
+          Type: EventBridgeRule
+          Properties:
+            Pattern:
+              source:
+                - bath-mon.sensors.1.event.sensor-record.aggregated
+              detail-type:
+                - !Ref StageName
+              detail:
+                type: 
+                  - bath-mon.sensors.1.event.sensor-record.aggregated
+
 
   # Sensors
   UpdateSensorFunction:
