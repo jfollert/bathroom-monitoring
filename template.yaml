@@ -52,7 +52,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref ResourcesApi
-            Path: /bathrooms/{id}
+            Path: /bathrooms/{bathroomId}
             Method: PUT
   
   FindBathroomFunction:
@@ -98,9 +98,34 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref ResourcesApi
-            Path: /bathrooms/{id}
+            Path: /bathrooms/{bathroomId}
             Method: DELETE
+  
+  UpdateBathroomDispenserFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs14.x
+      CodeUri: dist/src/apps/backend/lambdas/bathrooms/UpdateDispenser
+      Handler: UpdateBathroomDispenser.handler
+      Layers:
+        - !Ref SharedLayer
+        - !Ref BathroomsLayer
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref BathroomsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BathroomsTable
+      Events:
+        PutExam:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ResourcesApi
+            Path: /bathrooms/{bathroomId}/dispensers/{dispenserId}
+            Method: PUT
 
+
+  # Sensors
   UpdateSensorFunction:
     Type: 'AWS::Serverless::Function'
     Properties:

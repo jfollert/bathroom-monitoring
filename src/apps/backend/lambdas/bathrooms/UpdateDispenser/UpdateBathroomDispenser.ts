@@ -4,8 +4,8 @@ import  { Handler,
 } from "aws-lambda";
 
 import { DynamoDBBathroomRepository } from '@bath-mon/bathrooms/infrastructure/DynamoDBBathroomRepository';
-import { UpdateBathroomRequest } from '@bath-mon/bathrooms/application/Update/UpdateBathroomRequest';
-import { BathroomUpdater } from '@bath-mon/bathrooms/application/Update/BathroomUpdater';
+import { UpdateBathroomDispenserRequest } from '@bath-mon/bathrooms/application/UpdateDispenser/UpdateBathroomDispenserRequest';
+import { BathroomDispenserUpdater } from '@bath-mon/bathrooms/application/UpdateDispenser/BathroomDispenserUpdater';
 
 const {
 	TABLE_NAME
@@ -21,7 +21,7 @@ const HEADERS = {
 type ProxyHandler = Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2>
 
 export const handler : ProxyHandler = async (event, context) => {
-	console.info('==> Update Bathroom Handler')
+	console.info('==> Update Bathroom Dispenser Handler')
 	console.info('EVENT:', event);
 	console.info('CONTEXT:', context);
 
@@ -31,22 +31,24 @@ export const handler : ProxyHandler = async (event, context) => {
 	};
 
 	const bathroomId = event.pathParameters?.bathroomId;
+	const dispenserId = event.pathParameters?.dispenserId;
 
-	if (!bathroomId) return {
+	if (!bathroomId || !dispenserId) return {
 		statusCode: 400,
 		headers: HEADERS,
 	}
 
 	const body = JSON.parse(event.body || '{}');
-	const { floor, building } = body;
+	const { sensorId, status } = body;
 
 	const repository = new DynamoDBBathroomRepository(TABLE_NAME);
-	const updater = new BathroomUpdater(repository);
+	const updater = new BathroomDispenserUpdater(repository);
 
-	const request: UpdateBathroomRequest = {
-		id: bathroomId,
-		floor,
-		building
+	const request: UpdateBathroomDispenserRequest = {
+		id: dispenserId,
+		bathroomId,
+		sensorId,
+		status
 	}
 
 	try {
@@ -57,13 +59,18 @@ export const handler : ProxyHandler = async (event, context) => {
 		}
 	} catch (error: any) {
 		console.error('error: ', error);
-		if (error.name = 'InvalidArgumentError') return {
+		if (error.name == 'InvalidArgumentError') return {
 			statusCode: 400,
 			headers: HEADERS,
 		}
-		return {
-			statusCode: 500,
-			headers: HEADERS
+		if (error.name == 'NotFoundException') return {
+			statusCode: 404,
+			headers: HEADERS,
 		}
+	}
+
+	return {
+		statusCode: 500,
+		headers: HEADERS
 	}
 };
