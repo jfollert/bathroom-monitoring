@@ -33,5 +33,5 @@ export API_URL=<api-url>
 ```
 
 ```bash
-python3 multi.py
+ python3 src/apps/simulator/multi.py
 ```
