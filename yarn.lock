@@ -3589,17 +3589,17 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     "to-fast-properties" "^2.0.0"
 
-"@bath-mon/bathrooms@file:C:\\Users\\danie\\Desktop\\Taller progra\\bathroom-monitoring\\src\\modules\\bathrooms":
+"@bath-mon/bathrooms@file:C:\\Users\\danie\\Desktop\\Escritorio\\U\\Taller de programacion\\bathroom-monitoring\\src\\modules\\bathrooms":
   "resolved" "file:src/modules/bathrooms"
   "version" "1.0.0"
   dependencies:
     "@bath-mon/shared" "1.0.0"
 
-"@bath-mon/sensors@file:C:\\Users\\danie\\Desktop\\Taller progra\\bathroom-monitoring\\src\\modules\\sensors":
+"@bath-mon/sensors@file:C:\\Users\\danie\\Desktop\\Escritorio\\U\\Taller de programacion\\bathroom-monitoring\\src\\modules\\sensors":
   "resolved" "file:src/modules/sensors"
   "version" "1.0.0"
 
-"@bath-mon/shared@1.0.0", "@bath-mon/shared@file:C:\\Users\\danie\\Desktop\\Taller progra\\bathroom-monitoring\\src\\modules\\shared":
+"@bath-mon/shared@1.0.0", "@bath-mon/shared@file:C:\\Users\\danie\\Desktop\\Escritorio\\U\\Taller de programacion\\bathroom-monitoring\\src\\modules\\shared":
   "resolved" "file:src/modules/shared"
   "version" "1.0.0"
   dependencies:
