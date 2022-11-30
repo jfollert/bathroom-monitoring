@@ -30,9 +30,9 @@ export const handler : ProxyHandler = async (event, context) => {
 		headers: HEADERS,
 	};
 
-	const id = event.pathParameters?.id;
+	const bathroomId = event.pathParameters?.bathroomId;
 
-	if (!id) return {
+	if (!bathroomId) return {
 		statusCode: 400,
 		headers: HEADERS,
 	}
@@ -41,7 +41,7 @@ export const handler : ProxyHandler = async (event, context) => {
 	const remover = new BathroomRemover(repository);
 
 	const request: RemoveBathroomRequest = {
-		id
+		id: bathroomId
 	}
 
 	try {

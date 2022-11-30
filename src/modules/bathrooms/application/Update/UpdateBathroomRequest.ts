@@ -1,3 +1,5 @@
-import { BathroomPrimitives } from "../../domain/Bathroom";
-
-export type UpdateBathroomRequest = BathroomPrimitives;
+export type UpdateBathroomRequest = {
+	id: string;
+	building: string;
+	floor: number;
+}

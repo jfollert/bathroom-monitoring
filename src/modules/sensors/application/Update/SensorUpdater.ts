@@ -11,11 +11,11 @@ export class SensorUpdater {
 
 	async run(request: UpdateSensorRequest): Promise<void> {
 		console.log('request:', request);
-
-		const bathroom = new Sensor({
-			id: request.id
-		})
-
-		return await this.repository.save(bathroom);
+		const sensor = Sensor.fromPrimitives({
+			id: request.id,
+			name: request.name,
+			records: []
+		});
+		return await this.repository.save(sensor);
 	}
 }

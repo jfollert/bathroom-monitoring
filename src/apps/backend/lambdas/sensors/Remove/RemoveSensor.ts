@@ -1,11 +1,12 @@
+import { SensorRemover } from "@bath-mon/sensors/application/Remove/SensorRemover";
+
 import  { Handler,
 	APIGatewayProxyEventV2,
 	APIGatewayProxyResultV2
 } from "aws-lambda";
 
-import { SensorUpdater } from '@bath-mon/sensors/application/Update/SensorUpdater';
 import { DynamoDBSensorRepository } from "@bath-mon/sensors/infrastructure/DynamoDBSensorRepository";
-import { UpdateSensorRequest } from "@bath-mon/sensors/application/Update/UpdateSensorRequest";
+import { RemoveSensorRequest } from "@bath-mon/sensors/application/Remove/RemoveSensorRequest";
 
 const {
 	TABLE_NAME
@@ -21,7 +22,7 @@ const HEADERS = {
 type ProxyHandler = Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2>
 
 export const handler : ProxyHandler = async (event, context) => {
-	console.info('==> Update Sensor Handler')
+	console.info('==> Remove Sensors Handler')
 	console.info('EVENT:', event);
 	console.info('CONTEXT:', context);
 
@@ -37,28 +38,26 @@ export const handler : ProxyHandler = async (event, context) => {
 		headers: HEADERS,
 	}
 
-	const body = JSON.parse(event.body || '{}');
-	const { name } = body;
-
 	const repository = new DynamoDBSensorRepository(TABLE_NAME);
-	const updater = new SensorUpdater(repository);
+	const remover = new SensorRemover(repository);
 
-	const request: UpdateSensorRequest = {
-		id: sensorId,
-		name
+	const request: RemoveSensorRequest = {
+		id: sensorId
 	}
 
 	try {
-		await updater.run(request);
+		await remover.run(request);
 		return {
 			statusCode: 200,
 			headers: HEADERS
 		}
 	} catch (error: any) {
-		console.error('error: ', error);
-		if (error.name = 'InvalidArgumentError') return {
-			statusCode: 400,
-			headers: HEADERS,
+		console.error(error);
+		if (error.name === 'NotFoundException') {
+			return {
+				statusCode: 404,
+				headers: HEADERS
+			}
 		}
 		return {
 			statusCode: 500,

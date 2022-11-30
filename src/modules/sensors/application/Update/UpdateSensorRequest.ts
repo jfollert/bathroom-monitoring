@@ -1,3 +1,4 @@
 export type UpdateSensorRequest = {
-	id: string
-  };
+	id: string,
+	name: string
+};
