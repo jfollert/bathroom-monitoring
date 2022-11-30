@@ -7,3 +7,5 @@ test-results.xml
 .aws-sam/
 *.toml
 *.log
+*.lock
+yarn.lock
