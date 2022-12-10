@@ -4,7 +4,7 @@ Application for monitoring the status of toilet paper in restrooms.
 Typescript implementation using hexagonal architecture.
 
 ## Architecture
-![Architecture Diagram](architecture-diagram.png)
+![Architecture Diagram](architecture-diagram.png) 
 
 ## How to Deploy
 ### Configure
