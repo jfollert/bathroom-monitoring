@@ -1,16 +1,12 @@
 import React from "react";
-import axios from "axios";
-import { Table, Button, Container, ModalFooter, Modal, ModalHeader, ModalBody, FormGroup } from "reactstrap";
+import { Table, Button, Container } from "reactstrap";
 
-import { useNavigate } from "react-router-dom";
+const Home = () => {
 
-function Home() {
     return (
 
             
       <>
-        <br />
-        <br />
         <div className="mb-4 align-middle" style={{ display: 'flex', justifyContent: 'center' }}>
           <Button color="primary">Crear baño</ Button>{" "}
         </div>
