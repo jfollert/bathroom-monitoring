@@ -10,8 +10,6 @@ import {
 	Toolbar,
 	IconButton,
 	Typography,
-	Breadcrumbs,
-	Link,
 	InputAdornment,
 	TextField,
 	Box,
@@ -19,26 +17,8 @@ import {
 } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
-import Search from '@mui/icons-material/Search';
+import { Search, Edit, Delete, Add } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-
-function createData(
-	name,
-	calories,
-	fat,
-	carbs,
-	protein,
-  ) {
-	return { name, calories, fat, carbs, protein };
-  }
-  
-  const rows = [
-	createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-	createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-	createData('Eclair', 262, 16.0, 24, 6.0),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ];
 
 
 const BathroomDashboard = () => {
@@ -70,7 +50,7 @@ const BathroomDashboard = () => {
 			</AppBar>
 			<Container >
 				<TableContainer sx={{ marginTop: '2rem' }}>
-					<Box sx={{ width: '100%' }}>
+					<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
 						{/* <Typography variant="h4" color="inherit" component="div">
 							Gestión de Baños
 						</Typography> */}
@@ -90,8 +70,14 @@ const BathroomDashboard = () => {
 								</InputAdornment>,
 							}}
 						/>
-						<Button>
-							Registrar
+						<Button
+							variant="contained"
+							color="primary"
+							size="large"
+							sx={{ marginLeft: '1rem' }}
+							endIcon={<Add />}
+						>
+							Agregar
 						</Button>
 						{/* <Breadcrumbs aria-label="breadcrumb">
 							<Link underline="hover" color="inherit" href="/">
@@ -111,9 +97,10 @@ const BathroomDashboard = () => {
 						<TableHead>
 							<TableRow>
 								<TableCell>ID</TableCell>
-								<TableCell align="right">Edificio</TableCell>
-								<TableCell align="right">Piso</TableCell>
-								<TableCell align="right">Dispensadores</TableCell>
+								<TableCell align="center">Edificio</TableCell>
+								<TableCell align="center">Piso</TableCell>
+								<TableCell align="center">Dispensadores</TableCell>
+								<TableCell align="right">Acciones</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -124,9 +111,17 @@ const BathroomDashboard = () => {
 								<TableCell component="th" scope="row">
 								{row.id}
 								</TableCell>
-								<TableCell align="right">{row.building}</TableCell>
-								<TableCell align="right">{row.floor}</TableCell>
-								<TableCell align="right">{row.dispensers.length}</TableCell>
+								<TableCell align="center">{row.building}</TableCell>
+								<TableCell align="center">{row.floor}</TableCell>
+								<TableCell align="center">{row.dispensers.length}</TableCell>
+								<TableCell align="right">
+									<IconButton aria-label="edit" size="large">
+										<Edit color='primary' />
+									</IconButton>
+									<IconButton aria-label="delete" size="large">
+										<Delete color='error' />
+									</IconButton>
+								</TableCell>
 							</TableRow>
 							))}
 						</TableBody>
