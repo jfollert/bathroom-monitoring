@@ -13,17 +13,41 @@ import {
 	InputAdornment,
 	TextField,
 	Box,
-	Button
+	Button,
+	// Modal
 } from '@mui/material';
+
+import { useNavigate } from 'react-router-dom';
+
+
 
 import MenuIcon from '@mui/icons-material/Menu';
 import { Search, Edit, Delete, Add } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 
 
+// const style = {
+// 	position: 'absolute',
+// 	top: '50%',
+// 	left: '50%',
+// 	transform: 'translate(-50%, -50%)',
+// 	maxWidth: 500,
+// 	bgcolor: 'background.paper',
+// 	// border: '2px solid #000',
+// 	boxShadow: 24,
+// 	p: 4,
+// };
+
+
 const BathroomDashboard = () => {
 	const [bathrooms, setBathrooms] = useState([])
+	// const [open, setOpen] = useState(false)
+	// const handleOpen = () => setOpen(true);
+  	// const handleClose = () => setOpen(false);
 
+	const navigate = useNavigate();
+	const handleClick = () => navigate('/bathrooms/add')
+	
 	useEffect(() => {
 		const getData = async () => {
 			const response = await fetch('https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/bathrooms/')
@@ -37,6 +61,7 @@ const BathroomDashboard = () => {
 	
 	return (
 		<>
+			
 			<AppBar position="static">
 				<Toolbar variant="dense">
 					<IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
@@ -49,6 +74,21 @@ const BathroomDashboard = () => {
 				</Toolbar>			
 			</AppBar>
 			<Container >
+				{/* <Modal
+					open={open}
+					onClose={handleClose}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+					>
+						<Box sx={style}>
+							<Typography id="modal-modal-title" variant="h6" component="h2">
+							Text in a modal
+							</Typography>
+							<Typography id="modal-modal-description" sx={{ mt: 2 }}>
+							Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+							</Typography>
+						</Box>
+				</Modal> */}
 				<TableContainer sx={{ marginTop: '2rem' }}>
 					<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
 						{/* <Typography variant="h4" color="inherit" component="div">
@@ -61,12 +101,9 @@ const BathroomDashboard = () => {
 							size='small'
 							InputProps={{
 								endAdornment: <InputAdornment position="end">
-									<IconButton
-										aria-label="toggle password visibility"
-										edge="end"
-										>
-											<Search />
-										</IconButton>
+									<IconButton edge="end">
+										<Search />
+									</IconButton>
 								</InputAdornment>,
 							}}
 						/>
@@ -76,6 +113,7 @@ const BathroomDashboard = () => {
 							size="large"
 							sx={{ marginLeft: '1rem' }}
 							endIcon={<Add />}
+							onClick={handleClick}
 						>
 							Agregar
 						</Button>
