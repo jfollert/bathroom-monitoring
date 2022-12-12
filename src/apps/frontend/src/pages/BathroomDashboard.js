@@ -15,6 +15,13 @@ import {
 	Box,
 	Button,
 	Collapse,
+	Drawer,
+	Divider,
+	ListItem,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
+	CssBaseline,
 	// Modal
 } from '@mui/material';
 
@@ -23,8 +30,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 // import MenuIcon from '@mui/icons-material/Menu';
-import { Search, Edit, Delete, Add, KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon } from '@mui/icons-material';
+import { Search, Edit, Delete, Add, KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon, Inbox, Mail, Wc, Sensors } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
+import { List } from 'reactstrap';
 
 
 // const style = {
@@ -108,9 +116,6 @@ function Row(props) {
 
 const BathroomDashboard = () => {
 	const [bathrooms, setBathrooms] = useState([])
-	// const [open, setOpen] = useState(false)
-	// const handleOpen = () => setOpen(true);
-  	// const handleClose = () => setOpen(false);
 
 	const navigate = useNavigate();
 	const handleClick = () => navigate('/bathrooms/add')
@@ -127,9 +132,9 @@ const BathroomDashboard = () => {
 		}, [])
 	
 	return (
-		<>
-			
-			<AppBar position="static">
+		<Box sx={{ display: 'flex' }}> 
+			<CssBaseline />
+			<AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
 				<Toolbar >
 					{/* <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
 						<MenuIcon />
@@ -140,27 +145,40 @@ const BathroomDashboard = () => {
 					
 				</Toolbar>			
 			</AppBar>
-			<Container >
-				{/* <Modal
-					open={open}
-					onClose={handleClose}
-					aria-labelledby="modal-modal-title"
-					aria-describedby="modal-modal-description"
-					>
-						<Box sx={style}>
-							<Typography id="modal-modal-title" variant="h6" component="h2">
-							Text in a modal
-							</Typography>
-							<Typography id="modal-modal-description" sx={{ mt: 2 }}>
-							Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-							</Typography>
-						</Box>
-				</Modal> */}
+			<Drawer
+				variant="permanent"
+				sx={{
+				width: 240,
+				flexShrink: 0,
+				[`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+				}}
+			>
+				<Toolbar />
+				<Box sx={{ overflow: 'auto' }}>
+				<List>
+					<ListItem disablePadding>
+						<ListItemButton>
+						<ListItemIcon>
+							<Wc />
+						</ListItemIcon>
+						<ListItemText primary={'Baños'} />
+						</ListItemButton>
+					</ListItem>
+					<ListItem disablePadding>
+						<ListItemButton>
+						<ListItemIcon>
+							<Sensors />
+						</ListItemIcon>
+						<ListItemText primary={'Sensores'} />
+						</ListItemButton>
+					</ListItem>
+				</List>
+				</Box>
+			</Drawer>
+			<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+				<Toolbar />
 				<TableContainer sx={{ marginTop: '2rem' }}>
 					<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
-						{/* <Typography variant="h4" color="inherit" component="div">
-							Gestión de Baños
-						</Typography> */}
 						<TextField 
 							id="outlined-basic" 
 							label="Buscar" 
@@ -184,19 +202,6 @@ const BathroomDashboard = () => {
 						>
 							Agregar
 						</Button>
-						{/* <Breadcrumbs aria-label="breadcrumb">
-							<Link underline="hover" color="inherit" href="/">
-								MUI
-							</Link>
-							<Link
-								underline="hover"
-								color="inherit"
-								href="/material-ui/getting-started/installation/"
-							>
-								Core
-							</Link>
-							<Typography color="text.primary">Breadcrumbs</Typography>
-						</Breadcrumbs> */}
 					</Box>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">
 						<TableHead>
@@ -214,76 +219,12 @@ const BathroomDashboard = () => {
 								
 							return (
 								<Row key={row.id} row={row} />
-								// 	<>
-								// 	<TableRow
-								// 		key={row.id}
-								// 	>	
-								// 		<TableCell>
-								// 			<IconButton
-								// 				aria-label="expand row"
-								// 				size="small"
-								// 				onClick={() => setOpen(!open)}
-								// 			>
-								// 				{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-								// 			</IconButton>
-								// 		</TableCell>
-										// <TableCell component="th" scope="row">
-										// {row.id}
-										// </TableCell>
-										// <TableCell align="center">{row.building}</TableCell>
-										// <TableCell align="center">{row.floor}</TableCell>
-										// <TableCell align="center">{row.dispensers.length}</TableCell>
-										// <TableCell align="right">
-										// 	<IconButton aria-label="edit" size="large">
-										// 		<Edit color='primary' />
-										// 	</IconButton>
-										// 	<IconButton aria-label="delete" size="large">
-										// 		<Delete color='error' />
-										// 	</IconButton>
-										// </TableCell>
-								// 	</TableRow>
-								// 	<TableRow>
-								// 		<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-								// 		<Collapse in={open} timeout="auto" unmountOnExit>
-								// 			<Box sx={{ margin: 1 }}>
-								// 			<Typography variant="h6" gutterBottom component="div">
-								// 				History
-								// 			</Typography>
-								// 			<Table size="small" aria-label="purchases">
-								// 				<TableHead>
-								// 				<TableRow>
-								// 					<TableCell>Date</TableCell>
-								// 					<TableCell>Customer</TableCell>
-								// 					<TableCell align="right">Amount</TableCell>
-								// 					<TableCell align="right">Total price ($)</TableCell>
-								// 				</TableRow>
-								// 				</TableHead>
-								// 				<TableBody>
-								// 				{row.history.map((historyRow) => (
-								// 					<TableRow key={historyRow.date}>
-								// 					<TableCell component="th" scope="row">
-								// 						{historyRow.date}
-								// 					</TableCell>
-								// 					<TableCell>{historyRow.customerId}</TableCell>
-								// 					<TableCell align="right">{historyRow.amount}</TableCell>
-								// 					<TableCell align="right">
-								// 						{Math.round(historyRow.amount * row.price * 100) / 100}
-								// 					</TableCell>
-								// 					</TableRow>
-								// 				))}
-								// 				</TableBody>
-								// 			</Table>
-								// 			</Box>
-								// 		</Collapse>
-								// 		</TableCell>
-								// 	</TableRow>
-								// </>
 							)})}
 						</TableBody>
 					</Table>
 				</TableContainer>
-			</Container>
-		</>
+			</Box>
+		</Box>
 	)
 }
 
