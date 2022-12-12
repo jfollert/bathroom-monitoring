@@ -104,19 +104,28 @@ function Row(props) {
 						<TableRow>
 						<TableCell>ID</TableCell>
 						<TableCell>Sensor</TableCell>
-						<TableCell align="right">Estado</TableCell>
+						<TableCell align="right">Estado del papel</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{row.dispensers.map((dispenser) => (
-						<TableRow key={dispenser.id}>
-							<TableCell component="th" scope="row">
-							{dispenser.id}
-							</TableCell>
-							<TableCell>{dispenser.sensorId}</TableCell>
-							<TableCell align="right">{dispenser.status}</TableCell>
-						</TableRow>
-						))}
+						{row.dispensers.map((dispenser) => {
+							var status;
+							if (dispenser.status === 'UNKNOWN')
+								status = 'Sin registros'
+							else if (dispenser.status === 'NOT_EMPTY')
+								status = '🟢 Con papel'
+							else if (dispenser.status === 'EMPTY')
+								status = '🔴 Sin papel'
+
+							return (
+							<TableRow key={dispenser.id}>
+								<TableCell component="th" scope="row">
+								{dispenser.id}
+								</TableCell>
+								<TableCell>{dispenser.sensorId}</TableCell>
+								<TableCell align="right">{status}</TableCell>
+							</TableRow>
+						)})}
 					</TableBody>
 				</Table>
 				: <Typography variant="body2" color="text.secondary">

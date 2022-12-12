@@ -78,6 +78,7 @@ function Row(props) {
 			},
 		});
 		console.log("Delete response:", response);
+
 		handleCloseDeleteDialog();
 	};
 
@@ -103,11 +104,6 @@ function Row(props) {
 				value: value,
 			}),
 		});
-		// row.records.push({
-		// 	id: id,
-		// 	value: value,
-		// 	ocurredOn: data.timestamp,
-		// });
 		handleCloseNewRecordDialog();
 	};
   
