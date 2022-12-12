@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, NavbarToggler, CloseButton, Collapse, Nav, NavItem, Badge, Card, Row, Col, CardBody, CardTitle } from 'reactstrap';
+import { Navbar, Collapse, Nav, NavItem } from 'reactstrap';
 import "rsuite/dist/rsuite.min.css";
 
 function NavigationBar({ isLogged, userInfo }) {
