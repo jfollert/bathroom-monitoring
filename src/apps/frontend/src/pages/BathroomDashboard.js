@@ -14,6 +14,7 @@ import {
 	TextField,
 	Box,
 	Button,
+	Collapse,
 	// Modal
 } from '@mui/material';
 
@@ -21,8 +22,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-import MenuIcon from '@mui/icons-material/Menu';
-import { Search, Edit, Delete, Add } from '@mui/icons-material';
+// import MenuIcon from '@mui/icons-material/Menu';
+import { Search, Edit, Delete, Add, KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 
 
@@ -37,6 +38,72 @@ import { useEffect, useState } from 'react';
 // 	boxShadow: 24,
 // 	p: 4,
 // };
+
+function Row(props) {
+	const { row } = props;
+	const [open, setOpen] = useState(false);
+  
+	return (
+	  <>
+		<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+		  <TableCell>
+			<IconButton
+			  aria-label="expand row"
+			  size="small"
+			  onClick={() => setOpen(!open)}
+			>
+			  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+			</IconButton>
+		  </TableCell>
+			<TableCell component="th" scope="row">
+				{row.id}
+			</TableCell>
+			<TableCell align="center">{row.building}</TableCell>
+			<TableCell align="center">{row.floor}</TableCell>
+			<TableCell align="center">{row.dispensers.length}</TableCell>
+			<TableCell align="right">
+				<IconButton aria-label="edit" size="large">
+					<Edit color='primary' />
+				</IconButton>
+				<IconButton aria-label="delete" size="large">
+					<Delete color='error' />
+				</IconButton>
+			</TableCell>
+		</TableRow>
+		<TableRow>
+		  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+			<Collapse in={open} timeout="auto" unmountOnExit>
+			  <Box sx={{ margin: 1 }}>
+				<Typography variant="h6" gutterBottom component="div">
+				  Dispensadores
+				</Typography>
+				<Table size="small" aria-label="purchases">
+				  <TableHead>
+					<TableRow>
+					  <TableCell>ID</TableCell>
+					  <TableCell>Sensor</TableCell>
+					  <TableCell align="right">Estado</TableCell>
+					</TableRow>
+				  </TableHead>
+				  <TableBody>
+					{row.dispensers.map((dispenser) => (
+					  <TableRow key={dispenser.id}>
+						<TableCell component="th" scope="row">
+						  {dispenser.id}
+						</TableCell>
+						<TableCell>{dispenser.sensorId}</TableCell>
+						<TableCell align="right">{dispenser.status}</TableCell>
+					  </TableRow>
+					))}
+				  </TableBody>
+				</Table>
+			  </Box>
+			</Collapse>
+		  </TableCell>
+		</TableRow>
+	  </>
+	);
+  }
 
 
 const BathroomDashboard = () => {
@@ -63,12 +130,12 @@ const BathroomDashboard = () => {
 		<>
 			
 			<AppBar position="static">
-				<Toolbar variant="dense">
-					<IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+				<Toolbar >
+					{/* <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
 						<MenuIcon />
-					</IconButton>
+					</IconButton> */}
 					<Typography variant="h6" color="inherit" component="div">
-						Gestión de Baños
+						Estado de los Baños
 					</Typography>
 					
 				</Toolbar>			
@@ -134,6 +201,7 @@ const BathroomDashboard = () => {
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">
 						<TableHead>
 							<TableRow>
+								<TableCell />
 								<TableCell>ID</TableCell>
 								<TableCell align="center">Edificio</TableCell>
 								<TableCell align="center">Piso</TableCell>
@@ -142,26 +210,75 @@ const BathroomDashboard = () => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{bathrooms.map((row) => (
-							<TableRow
-								key={row.id}
-							>
-								<TableCell component="th" scope="row">
-								{row.id}
-								</TableCell>
-								<TableCell align="center">{row.building}</TableCell>
-								<TableCell align="center">{row.floor}</TableCell>
-								<TableCell align="center">{row.dispensers.length}</TableCell>
-								<TableCell align="right">
-									<IconButton aria-label="edit" size="large">
-										<Edit color='primary' />
-									</IconButton>
-									<IconButton aria-label="delete" size="large">
-										<Delete color='error' />
-									</IconButton>
-								</TableCell>
-							</TableRow>
-							))}
+							{bathrooms.map((row) => {
+								
+							return (
+								<Row key={row.id} row={row} />
+								// 	<>
+								// 	<TableRow
+								// 		key={row.id}
+								// 	>	
+								// 		<TableCell>
+								// 			<IconButton
+								// 				aria-label="expand row"
+								// 				size="small"
+								// 				onClick={() => setOpen(!open)}
+								// 			>
+								// 				{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+								// 			</IconButton>
+								// 		</TableCell>
+										// <TableCell component="th" scope="row">
+										// {row.id}
+										// </TableCell>
+										// <TableCell align="center">{row.building}</TableCell>
+										// <TableCell align="center">{row.floor}</TableCell>
+										// <TableCell align="center">{row.dispensers.length}</TableCell>
+										// <TableCell align="right">
+										// 	<IconButton aria-label="edit" size="large">
+										// 		<Edit color='primary' />
+										// 	</IconButton>
+										// 	<IconButton aria-label="delete" size="large">
+										// 		<Delete color='error' />
+										// 	</IconButton>
+										// </TableCell>
+								// 	</TableRow>
+								// 	<TableRow>
+								// 		<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+								// 		<Collapse in={open} timeout="auto" unmountOnExit>
+								// 			<Box sx={{ margin: 1 }}>
+								// 			<Typography variant="h6" gutterBottom component="div">
+								// 				History
+								// 			</Typography>
+								// 			<Table size="small" aria-label="purchases">
+								// 				<TableHead>
+								// 				<TableRow>
+								// 					<TableCell>Date</TableCell>
+								// 					<TableCell>Customer</TableCell>
+								// 					<TableCell align="right">Amount</TableCell>
+								// 					<TableCell align="right">Total price ($)</TableCell>
+								// 				</TableRow>
+								// 				</TableHead>
+								// 				<TableBody>
+								// 				{row.history.map((historyRow) => (
+								// 					<TableRow key={historyRow.date}>
+								// 					<TableCell component="th" scope="row">
+								// 						{historyRow.date}
+								// 					</TableCell>
+								// 					<TableCell>{historyRow.customerId}</TableCell>
+								// 					<TableCell align="right">{historyRow.amount}</TableCell>
+								// 					<TableCell align="right">
+								// 						{Math.round(historyRow.amount * row.price * 100) / 100}
+								// 					</TableCell>
+								// 					</TableRow>
+								// 				))}
+								// 				</TableBody>
+								// 			</Table>
+								// 			</Box>
+								// 		</Collapse>
+								// 		</TableCell>
+								// 	</TableRow>
+								// </>
+							)})}
 						</TableBody>
 					</Table>
 				</TableContainer>
