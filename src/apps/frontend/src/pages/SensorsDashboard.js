@@ -207,6 +207,29 @@ function Row(props) {
 
 const SensorsDashboard = () => {
 	const [sensors, setSensors] = useState([])
+	const [openNewSensorDialog, setOpenNewSensorDialog] = useState(false)
+	const newSensorInputRef = useRef(null)
+
+	const handleClickOpenNewSensorDialog = () => setOpenNewSensorDialog(true)
+	const handleCloseNewSensorDialog = () => setOpenNewSensorDialog(false)
+
+	const handleNewSensor = async (name) => {
+		const id = uuidv4();
+		console.log('id', id)
+
+		const response = await fetch(`https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/${id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				name: name
+			})
+		})
+		console.log(response)
+
+		handleCloseNewSensorDialog();
+	}
 
 	const navigate = useNavigate();
 	const handleClick = () => navigate('/bathrooms/add')
@@ -271,6 +294,29 @@ const SensorsDashboard = () => {
 				<Typography variant="h4" gutterBottom component="div">
 					Sensores
 				</Typography>
+				<Dialog open={openNewSensorDialog} onClose={handleCloseNewSensorDialog}>
+					<DialogTitle>Nuevo Sensor</DialogTitle>
+					<DialogContent>
+						{/* <DialogContentText>
+							To subscribe to this website, please enter your email address here. We
+							will send updates occasionally.
+						</DialogContentText> */}
+						<TextField
+							autoFocus
+							margin="dense"
+							id="name"
+							label="Nombre"
+							type="name"
+							fullWidth
+							variant="standard"
+							inputRef={newSensorInputRef}
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button color="error" onClick={handleCloseNewSensorDialog}>Cancelar</Button>
+						<Button onClick={() => handleNewSensor(newSensorInputRef.current.value)}>Registrar</Button>
+					</DialogActions>
+				</Dialog>
 				<TableContainer sx={{ marginTop: '2rem' }}>
 					<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
 						<TextField 
@@ -292,7 +338,7 @@ const SensorsDashboard = () => {
 							size="small"
 							sx={{ marginLeft: '1rem' }}
 							startIcon={<Add />}
-							onClick={handleClick}
+							onClick={handleClickOpenNewSensorDialog}
 						>
 							Nuevo Sensor
 						</Button>
