@@ -58,7 +58,28 @@ function Row(props) {
 	const { row } = props;
 	const [open, setOpen] = useState(false);
 	const [openNewRecordDialog, setOpenNewRecordDialog] = useState(false);
+	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 	const newRecordInputRef = useRef()
+
+	const handleClickOpenDeleteDialog = () => {
+		setOpenDeleteDialog(true);
+	};
+
+	const handleCloseDeleteDialog = () => {
+		setOpenDeleteDialog(false);
+	};
+
+	const handleDelete = async (sensorId) => {
+		console.log("Delete sensor:", sensorId);
+		const response = await fetch(`https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/${sensorId}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		console.log("Delete response:", response);
+		handleCloseDeleteDialog();
+	};
 
 	const handleClickOpenNewRecordDialog = () => {
 		setOpenNewRecordDialog(true);
@@ -117,6 +138,27 @@ function Row(props) {
 				<Button onClick={() => handleNewRecord(row.id, newRecordInputRef.current.value)}>Registrar</Button>
 			</DialogActions>
 		</Dialog>
+		<Dialog
+			open={openDeleteDialog}
+			onClose={handleCloseDeleteDialog}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">
+				¿Está seguro que desea eliminar el sensor?
+			</DialogTitle>
+			<DialogContent>
+			<DialogContentText id="alert-dialog-description">
+				Esta acción no se puede deshacer.
+			</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+			<Button color="error" onClick={handleCloseDeleteDialog}>Cancelar</Button>
+			<Button onClick={() => handleDelete(row.id)} autoFocus>
+				Eliminar
+			</Button>
+			</DialogActions>
+		</Dialog>
 		<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
 		  <TableCell>
 			<IconButton
@@ -136,7 +178,7 @@ function Row(props) {
 				<IconButton aria-label="edit" size="large">
 					<Edit color='primary' />
 				</IconButton>
-				<IconButton aria-label="delete" size="large">
+				<IconButton aria-label="delete" size="large" onClick={handleClickOpenDeleteDialog}>
 					<Delete color='error' />
 				</IconButton>
 			</TableCell>
