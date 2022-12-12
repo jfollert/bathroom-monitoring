@@ -172,14 +172,13 @@ function Row(props) {
 						<TableBody>
 						{row.records.map((record) => {
 							const a = new Date(record.ocurredOn);
-							var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-							var year = a.getFullYear();
-							var month = months[a.getMonth()];
-							var date = a.getDate();
-							var hour = a.getHours();
-							var min = a.getMinutes();
-							var sec = a.getSeconds();
-							var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+							const year = a.getFullYear();
+							const month = a.getMonth();
+							const date = a.getDate();
+							const hours = "0" + a.getHours();
+							const minutes = "0" + a.getMinutes();
+							const seconds = "0" + a.getSeconds();
+							const time =`${date}/${month}/${year} ${hours}:${minutes.substr(-2)}:${seconds.substr(-2)}`;
 							return (
 								<TableRow key={record.id}>
 									<TableCell component="th" scope="row">
