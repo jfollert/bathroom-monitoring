@@ -82,29 +82,47 @@ function Row(props) {
 		  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
 			<Collapse in={open} timeout="auto" unmountOnExit>
 			  <Box sx={{ margin: 1 }}>
-				<Typography variant="h6" gutterBottom component="div">
-				  Dispensadores
-				</Typography>
-				<Table size="small" aria-label="purchases">
-				  <TableHead>
-					<TableRow>
-					  <TableCell>ID</TableCell>
-					  <TableCell>Sensor</TableCell>
-					  <TableCell align="right">Estado</TableCell>
-					</TableRow>
-				  </TableHead>
-				  <TableBody>
-					{row.dispensers.map((dispenser) => (
-					  <TableRow key={dispenser.id}>
-						<TableCell component="th" scope="row">
-						  {dispenser.id}
-						</TableCell>
-						<TableCell>{dispenser.sensorId}</TableCell>
-						<TableCell align="right">{dispenser.status}</TableCell>
-					  </TableRow>
-					))}
-				  </TableBody>
+				<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
+					<Typography variant="h6" gutterBottom component="div">
+						Dispensadores
+					</Typography>
+					<Button
+						variant="contained"
+						color="primary"
+						size="small"
+						sx={{ marginLeft: '1rem' }}
+						startIcon={<Add />}
+						// onClick={handleClick}
+					>
+						Nuevo Dispensador
+					</Button>
+				</Box>
+				
+				{ row.dispensers.length > 0
+				? <Table size="small" aria-label="purchases">
+					<TableHead>
+						<TableRow>
+						<TableCell>ID</TableCell>
+						<TableCell>Sensor</TableCell>
+						<TableCell align="right">Estado</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{row.dispensers.map((dispenser) => (
+						<TableRow key={dispenser.id}>
+							<TableCell component="th" scope="row">
+							{dispenser.id}
+							</TableCell>
+							<TableCell>{dispenser.sensorId}</TableCell>
+							<TableCell align="right">{dispenser.status}</TableCell>
+						</TableRow>
+						))}
+					</TableBody>
 				</Table>
+				: <Typography variant="body2" color="text.secondary">
+					No hay dispensadores en este baño
+				</Typography>
+				}
 			  </Box>
 			</Collapse>
 		  </TableCell>
@@ -198,12 +216,12 @@ const BathroomDashboard = () => {
 						<Button
 							variant="contained"
 							color="primary"
-							size="large"
+							size="small"
 							sx={{ marginLeft: '1rem' }}
-							endIcon={<Add />}
+							startIcon={<Add />}
 							onClick={handleClick}
 						>
-							Agregar
+							Nuevo Baño
 						</Button>
 					</Box>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">

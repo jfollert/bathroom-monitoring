@@ -81,29 +81,47 @@ function Row(props) {
 		  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
 			<Collapse in={open} timeout="auto" unmountOnExit>
 			  <Box sx={{ margin: 1 }}>
-				<Typography variant="h6" gutterBottom component="div">
-				  Registros
-				</Typography>
-				<Table size="small" aria-label="purchases">
-				  <TableHead>
-					<TableRow>
-					  <TableCell>ID</TableCell>
-					  <TableCell>Ocurrido a las</TableCell>
-					  <TableCell align="right">Valor</TableCell>
-					</TableRow>
-				  </TableHead>
-				  <TableBody>
-					{row.records.map((record) => (
-					  <TableRow key={record.id}>
-						<TableCell component="th" scope="row">
-						  {record.id}
-						</TableCell>
-						<TableCell>{record.ocurredOn}</TableCell>
-						<TableCell align="right">{record.value}</TableCell>
-					  </TableRow>
-					))}
-				  </TableBody>
-				</Table>
+				<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
+					<Typography variant="h6" gutterBottom component="div">
+					Registros
+					</Typography>
+					<Button
+							variant="contained"
+							color="primary"
+							size="small"
+							sx={{ marginLeft: '1rem' }}
+							startIcon={<Add />}
+							// onClick={handleClick}
+						>
+							Nuevo Registro
+					</Button>
+				</Box>
+				{ row.records.length > 0
+					? <Table size="small" aria-label="purchases">
+						<TableHead>
+							<TableRow>
+								<TableCell>ID</TableCell>
+								<TableCell>Ocurrido a las</TableCell>
+								<TableCell align="right">Valor</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+						{row.records.map((record) => (
+							<TableRow key={record.id}>
+								<TableCell component="th" scope="row">
+									{record.id}
+								</TableCell>
+								<TableCell>{record.ocurredOn}</TableCell>
+								<TableCell align="right">{record.value}</TableCell>
+							</TableRow>
+						))}
+						</TableBody>
+				  </Table>
+					: <Typography variant="body1" gutterBottom component="div">
+						No hay registros
+					</Typography>
+				}
+				
 			  </Box>
 			</Collapse>
 		  </TableCell>
@@ -197,12 +215,12 @@ const SensorsDashboard = () => {
 						<Button
 							variant="contained"
 							color="primary"
-							size="large"
+							size="small"
 							sx={{ marginLeft: '1rem' }}
-							endIcon={<Add />}
+							startIcon={<Add />}
 							onClick={handleClick}
 						>
-							Agregar
+							Nuevo Sensor
 						</Button>
 					</Box>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">
