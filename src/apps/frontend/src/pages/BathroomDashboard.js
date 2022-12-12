@@ -22,37 +22,122 @@ import {
 	ListItemIcon,
 	ListItemText,
 	CssBaseline,
+	DialogTitle,
+	Dialog,
+	DialogContent,
+	DialogActions,
+	DialogContentText,
 	// Modal
 } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
-
-
+import { v4 as uuidv4 } from 'uuid';
 
 // import MenuIcon from '@mui/icons-material/Menu';
 import { Search, Edit, Delete, Add, KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon, Inbox, Mail, Wc, Sensors } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { List } from 'reactstrap';
 
-
-// const style = {
-// 	position: 'absolute',
-// 	top: '50%',
-// 	left: '50%',
-// 	transform: 'translate(-50%, -50%)',
-// 	maxWidth: 500,
-// 	bgcolor: 'background.paper',
-// 	// border: '2px solid #000',
-// 	boxShadow: 24,
-// 	p: 4,
-// };
 
 function Row(props) {
 	const { row } = props;
 	const [open, setOpen] = useState(false);
+	const [openNewDispenserDialog, setOpenNewDispenserDialog] = useState(false);
+	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+	const newDispenserSensorInputRef = useRef()
+
+	const handleClickOpenDeleteDialog = () => {
+		setOpenDeleteDialog(true);
+	};
+
+	const handleCloseDeleteDialog = () => {
+		setOpenDeleteDialog(false);
+	};
+
+	const handleDelete = async (bathroomId) => {
+		console.log("Delete bathroom:", bathroomId);
+		const response = await fetch(`https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/bathrooms/${bathroomId}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		console.log("Delete response:", response);
+
+		handleCloseDeleteDialog();
+	};
+
+	const handleClickOpenNewDispenserDialog = () => {
+		setOpenNewDispenserDialog(true);
+	  };
+	
+	const handleCloseNewDispenserDialog = () => {
+		setOpenNewDispenserDialog(false);
+	};
+
+	const handleNewDispenser = async (sensorId, value) => {
+		const id = uuidv4();
+		console.log("New dispenser:", id);
+		// console.log("Sensor:", sensorId);
+		// console.log("Value:", value);
+		// const response = await fetch(`https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/${sensorId}/records/${id}`, {
+		// 	method: 'PUT',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 	},
+		// 	body: JSON.stringify({
+		// 		value: value,
+		// 	}),
+		// });
+		// handleCloseNewRecordDialog();
+	};
   
 	return (
 	  <>
+	  	<Dialog open={openNewDispenserDialog} onClose={handleCloseNewDispenserDialog}>
+			<DialogTitle>Nuevo Dispensador</DialogTitle>
+			<DialogContent>
+				{/* <DialogContentText>
+					To subscribe to this website, please enter your email address here. We
+					will send updates occasionally.
+				</DialogContentText> */}
+				<TextField
+					autoFocus
+					margin="dense"
+					id="sensorId"
+					label="ID del Sensor"
+					type="text"
+					fullWidth
+					variant="standard"
+					inputRef={newDispenserSensorInputRef}
+				/>
+			</DialogContent>
+			<DialogActions>
+				<Button color="error" onClick={handleCloseNewDispenserDialog}>Cancelar</Button>
+				<Button onClick={() => handleNewDispenser(row.id, newDispenserSensorInputRef.current.value)}>Registrar</Button>
+			</DialogActions>
+		</Dialog>
+		<Dialog
+			open={openDeleteDialog}
+			onClose={handleCloseDeleteDialog}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">
+				¿Está seguro que desea eliminar el baño?
+			</DialogTitle>
+			<DialogContent>
+			<DialogContentText id="alert-dialog-description">
+				Esta acción no se puede deshacer.
+			</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+			<Button color="error" onClick={handleCloseDeleteDialog}>Cancelar</Button>
+			<Button onClick={() => handleDelete(row.id)} autoFocus>
+				Eliminar
+			</Button>
+			</DialogActions>
+		</Dialog>
 		<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
 		  <TableCell>
 			<IconButton
@@ -73,7 +158,7 @@ function Row(props) {
 				<IconButton aria-label="edit" size="large">
 					<Edit color='primary' />
 				</IconButton>
-				<IconButton aria-label="delete" size="large">
+				<IconButton aria-label="delete" onClick={handleClickOpenDeleteDialog} size="large">
 					<Delete color='error' />
 				</IconButton>
 			</TableCell>
@@ -92,7 +177,7 @@ function Row(props) {
 						size="small"
 						sx={{ marginLeft: '1rem' }}
 						startIcon={<Add />}
-						// onClick={handleClick}
+						onClick={handleClickOpenNewDispenserDialog}
 					>
 						Nuevo Dispensador
 					</Button>
@@ -143,9 +228,33 @@ function Row(props) {
 
 const BathroomDashboard = () => {
 	const [bathrooms, setBathrooms] = useState([])
+	const [openNewBathroomDialog, setOpenNewBathroomDialog ] = useState(false)
+	const newBathroomBuildingInputRef = useRef(null)
+	const newBathroomFloorInputRef = useRef(null)
+
+	const handleClickOpenNewBathroomDialog = () => setOpenNewBathroomDialog(true)
+	const handleCloseNewBathroomDialog = () => setOpenNewBathroomDialog(false)
+
+	const handleNewBathroom = async (building, floor) => {
+		const id = uuidv4();
+		console.log('id', id)
+
+		const response = await fetch(`https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/bathrooms/${id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				building: building,
+				floor: parseInt(floor)
+			})
+		})
+		console.log(response)
+
+		handleCloseNewBathroomDialog();
+	}
 
 	const navigate = useNavigate();
-	const handleClick = () => navigate('/bathrooms/add')
 	
 	useEffect(() => {
 		const getData = async () => {
@@ -207,6 +316,39 @@ const BathroomDashboard = () => {
 				<Typography variant="h4" gutterBottom component="div">
 					Baños
 				</Typography>
+				<Dialog open={openNewBathroomDialog} onClose={handleCloseNewBathroomDialog}>
+					<DialogTitle>Nuevo Baño</DialogTitle>
+					<DialogContent>
+						{/* <DialogContentText>
+							To subscribe to this website, please enter your email address here. We
+							will send updates occasionally.
+						</DialogContentText> */}
+						<TextField
+							autoFocus
+							margin="dense"
+							id="building"
+							label="Edificio"
+							type="text"
+							fullWidth
+							variant="standard"
+							inputRef={newBathroomBuildingInputRef}
+						/>
+						<TextField
+							autoFocus
+							margin="dense"
+							id="floor"
+							label="Piso"
+							type="number"
+							fullWidth
+							variant="standard"
+							inputRef={newBathroomFloorInputRef}
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button color="error" onClick={handleCloseNewBathroomDialog}>Cancelar</Button>
+						<Button onClick={() => handleNewBathroom(newBathroomBuildingInputRef.current.value, newBathroomFloorInputRef.current.value)}>Registrar</Button>
+					</DialogActions>
+				</Dialog>
 				<TableContainer sx={{ marginTop: '2rem' }}>
 					<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
 						<TextField 
@@ -228,7 +370,7 @@ const BathroomDashboard = () => {
 							size="small"
 							sx={{ marginLeft: '1rem' }}
 							startIcon={<Add />}
-							onClick={handleClick}
+							onClick={handleClickOpenNewBathroomDialog}
 						>
 							Nuevo Baño
 						</Button>
