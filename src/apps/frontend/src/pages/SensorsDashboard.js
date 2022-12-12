@@ -37,7 +37,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 // import MenuIcon from '@mui/icons-material/Menu';
-import { Search, Edit, Delete, Add, KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon, Inbox, Mail, Wc, Sensors } from '@mui/icons-material';
+import { Search, Edit, Delete, Add, KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon, Inbox, Mail, Wc, Sensors, Dashboard as DashboardIcon } from '@mui/icons-material';
 import { useEffect, useRef, useState } from 'react';
 import { List } from 'reactstrap';
 
@@ -270,8 +270,7 @@ const SensorsDashboard = () => {
 	}
 
 	const navigate = useNavigate();
-	const handleClick = () => navigate('/bathrooms/add')
-	
+		
 	useEffect(() => {
 		const getData = async () => {
 			const response = await fetch('https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/')
@@ -308,6 +307,14 @@ const SensorsDashboard = () => {
 				<Toolbar />
 				<Box sx={{ overflow: 'auto' }}>
 				<List>
+					<ListItem disablePadding>
+						<ListItemButton onClick={() => navigate('/')}>
+							<ListItemIcon>
+								<DashboardIcon />
+							</ListItemIcon>
+							<ListItemText primary={'Dashboard'} />
+						</ListItemButton>
+					</ListItem>
 					<ListItem disablePadding>
 						<ListItemButton onClick={() => navigate('/bathrooms')}>
 							<ListItemIcon>

@@ -226,7 +226,7 @@ function Row(props) {
   }
 
 
-const BathroomDashboard = () => {
+const Dashboard = () => {
 	const [bathrooms, setBathrooms] = useState([])
 	const [openNewBathroomDialog, setOpenNewBathroomDialog ] = useState(false)
 	const newBathroomBuildingInputRef = useRef(null)
@@ -322,90 +322,12 @@ const BathroomDashboard = () => {
 			<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
 				<Toolbar />
 				<Typography variant="h4" gutterBottom component="div">
-					Baños
+					Dashboard
 				</Typography>
-				<Dialog open={openNewBathroomDialog} onClose={handleCloseNewBathroomDialog}>
-					<DialogTitle>Nuevo Baño</DialogTitle>
-					<DialogContent>
-						{/* <DialogContentText>
-							To subscribe to this website, please enter your email address here. We
-							will send updates occasionally.
-						</DialogContentText> */}
-						<TextField
-							autoFocus
-							margin="dense"
-							id="building"
-							label="Edificio"
-							type="text"
-							fullWidth
-							variant="standard"
-							inputRef={newBathroomBuildingInputRef}
-						/>
-						<TextField
-							autoFocus
-							margin="dense"
-							id="floor"
-							label="Piso"
-							type="number"
-							fullWidth
-							variant="standard"
-							inputRef={newBathroomFloorInputRef}
-						/>
-					</DialogContent>
-					<DialogActions>
-						<Button color="error" onClick={handleCloseNewBathroomDialog}>Cancelar</Button>
-						<Button onClick={() => handleNewBathroom(newBathroomBuildingInputRef.current.value, newBathroomFloorInputRef.current.value)}>Registrar</Button>
-					</DialogActions>
-				</Dialog>
-				<TableContainer sx={{ marginTop: '2rem' }}>
-					<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
-						<TextField 
-							id="outlined-basic" 
-							label="Buscar" 
-							variant="outlined"
-							size='small'
-							InputProps={{
-								endAdornment: <InputAdornment position="end">
-									<IconButton edge="end">
-										<Search />
-									</IconButton>
-								</InputAdornment>,
-							}}
-						/>
-						<Button
-							variant="contained"
-							color="primary"
-							size="small"
-							sx={{ marginLeft: '1rem' }}
-							startIcon={<Add />}
-							onClick={handleClickOpenNewBathroomDialog}
-						>
-							Nuevo Baño
-						</Button>
-					</Box>
-					<Table sx={{ minWidth: 650 }} aria-label="simple table">
-						<TableHead>
-							<TableRow>
-								<TableCell />
-								<TableCell>ID</TableCell>
-								<TableCell align="center">Edificio</TableCell>
-								<TableCell align="center">Piso</TableCell>
-								<TableCell align="center">Dispensadores</TableCell>
-								<TableCell align="right">Acciones</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{bathrooms.map((row) => {
-								
-							return (
-								<Row key={row.id} row={row} />
-							)})}
-						</TableBody>
-					</Table>
-				</TableContainer>
+				
 			</Box>
 		</Box>
 	)
 }
 
-export default BathroomDashboard
+export default Dashboard
