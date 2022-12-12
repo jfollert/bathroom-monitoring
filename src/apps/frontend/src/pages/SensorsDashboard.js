@@ -22,16 +22,23 @@ import {
 	ListItemIcon,
 	ListItemText,
 	CssBaseline,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogContentText,
+	DialogActions,
 	// Modal
 } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 
+import { v4 as uuidv4 } from 'uuid';
+
 
 
 // import MenuIcon from '@mui/icons-material/Menu';
 import { Search, Edit, Delete, Add, KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon, Inbox, Mail, Wc, Sensors } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { List } from 'reactstrap';
 
 
@@ -50,9 +57,66 @@ import { List } from 'reactstrap';
 function Row(props) {
 	const { row } = props;
 	const [open, setOpen] = useState(false);
+	const [openNewRecordDialog, setOpenNewRecordDialog] = useState(false);
+	const newRecordInputRef = useRef()
+
+	const handleClickOpenNewRecordDialog = () => {
+		setOpenNewRecordDialog(true);
+	  };
+	
+	const handleCloseNewRecordDialog = () => {
+		setOpenNewRecordDialog(false);
+	};
+
+	const handleNewRecord = async (sensorId, value) => {
+		const id = uuidv4();
+		console.log("New record:", id);
+		console.log("Sensor:", sensorId);
+		console.log("Value:", value);
+		const response = await fetch(`https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/${sensorId}/records/${id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				value: value,
+			}),
+		});
+		// row.records.push({
+		// 	id: id,
+		// 	value: value,
+		// 	ocurredOn: data.timestamp,
+		// });
+		handleCloseNewRecordDialog();
+	};
   
 	return (
 	  <>
+		<Dialog open={openNewRecordDialog} onClose={handleCloseNewRecordDialog}>
+			<DialogTitle>Nuevo Registro</DialogTitle>
+			<DialogContent>
+				{/* <DialogContentText>
+					To subscribe to this website, please enter your email address here. We
+					will send updates occasionally.
+				</DialogContentText> */}
+				<TextField
+					autoFocus
+					margin="dense"
+					id="value"
+					label="Valor"
+					type="number"
+					fullWidth
+					variant="standard"
+					// value="0"
+					defaultValue={0}
+					inputRef={newRecordInputRef}
+				/>
+			</DialogContent>
+			<DialogActions>
+				<Button color="error" onClick={handleCloseNewRecordDialog}>Cancelar</Button>
+				<Button onClick={() => handleNewRecord(row.id, newRecordInputRef.current.value)}>Registrar</Button>
+			</DialogActions>
+		</Dialog>
 		<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
 		  <TableCell>
 			<IconButton
@@ -83,7 +147,7 @@ function Row(props) {
 			  <Box sx={{ margin: 1 }}>
 				<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
 					<Typography variant="h6" gutterBottom component="div">
-					Registros
+						Registros
 					</Typography>
 					<Button
 							variant="contained"
@@ -91,7 +155,7 @@ function Row(props) {
 							size="small"
 							sx={{ marginLeft: '1rem' }}
 							startIcon={<Add />}
-							// onClick={handleClick}
+							onClick={handleClickOpenNewRecordDialog}
 						>
 							Nuevo Registro
 					</Button>
@@ -106,15 +170,26 @@ function Row(props) {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-						{row.records.map((record) => (
-							<TableRow key={record.id}>
-								<TableCell component="th" scope="row">
-									{record.id}
-								</TableCell>
-								<TableCell>{record.ocurredOn}</TableCell>
-								<TableCell align="right">{record.value}</TableCell>
-							</TableRow>
-						))}
+						{row.records.map((record) => {
+							const a = new Date(record.ocurredOn);
+							var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+							var year = a.getFullYear();
+							var month = months[a.getMonth()];
+							var date = a.getDate();
+							var hour = a.getHours();
+							var min = a.getMinutes();
+							var sec = a.getSeconds();
+							var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+							return (
+								<TableRow key={record.id}>
+									<TableCell component="th" scope="row">
+										{record.id}
+									</TableCell>
+									<TableCell>{time}</TableCell>
+									<TableCell align="right">{record.value}</TableCell>
+								</TableRow>
+							);
+						})}
 						</TableBody>
 				  </Table>
 					: <Typography variant="body1" gutterBottom component="div">
