@@ -66,9 +66,8 @@ function Row(props) {
 			<TableCell component="th" scope="row">
 				{row.id}
 			</TableCell>
-			<TableCell align="center">{row.building}</TableCell>
-			<TableCell align="center">{row.floor}</TableCell>
-			<TableCell align="center">{row.dispensers.length}</TableCell>
+			<TableCell align="center">{row.name}</TableCell>
+			<TableCell align="center">{row.records.length}</TableCell>
 			<TableCell align="right">
 				<IconButton aria-label="edit" size="large">
 					<Edit color='primary' />
@@ -83,24 +82,24 @@ function Row(props) {
 			<Collapse in={open} timeout="auto" unmountOnExit>
 			  <Box sx={{ margin: 1 }}>
 				<Typography variant="h6" gutterBottom component="div">
-				  Dispensadores
+				  Registros
 				</Typography>
 				<Table size="small" aria-label="purchases">
 				  <TableHead>
 					<TableRow>
 					  <TableCell>ID</TableCell>
-					  <TableCell>Sensor</TableCell>
-					  <TableCell align="right">Estado</TableCell>
+					  <TableCell>Ocurrido a las</TableCell>
+					  <TableCell align="right">Valor</TableCell>
 					</TableRow>
 				  </TableHead>
 				  <TableBody>
-					{row.dispensers.map((dispenser) => (
-					  <TableRow key={dispenser.id}>
+					{row.records.map((record) => (
+					  <TableRow key={record.id}>
 						<TableCell component="th" scope="row">
-						  {dispenser.id}
+						  {record.id}
 						</TableCell>
-						<TableCell>{dispenser.sensorId}</TableCell>
-						<TableCell align="right">{dispenser.status}</TableCell>
+						<TableCell>{record.ocurredOn}</TableCell>
+						<TableCell align="right">{record.value}</TableCell>
 					  </TableRow>
 					))}
 				  </TableBody>
@@ -114,19 +113,19 @@ function Row(props) {
   }
 
 
-const BathroomDashboard = () => {
-	const [bathrooms, setBathrooms] = useState([])
+const SensorsDashboard = () => {
+	const [sensors, setSensors] = useState([])
 
 	const navigate = useNavigate();
 	const handleClick = () => navigate('/bathrooms/add')
 	
 	useEffect(() => {
 		const getData = async () => {
-			const response = await fetch('https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/bathrooms/')
+			const response = await fetch('https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/')
 			return response.json()
 		}
 		getData().then(data => {
-			setBathrooms(data)
+			setSensors(data)
 			console.log(data)
 		})
 		}, [])
@@ -178,7 +177,7 @@ const BathroomDashboard = () => {
 			<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
 				<Toolbar />
 				<Typography variant="h4" gutterBottom component="div">
-					Baños
+					Sensores
 				</Typography>
 				<TableContainer sx={{ marginTop: '2rem' }}>
 					<Box sx={{ width: '100%' }} display="flex" justifyContent="space-between" alignItems="center">
@@ -211,15 +210,13 @@ const BathroomDashboard = () => {
 							<TableRow>
 								<TableCell />
 								<TableCell>ID</TableCell>
-								<TableCell align="center">Edificio</TableCell>
-								<TableCell align="center">Piso</TableCell>
-								<TableCell align="center">Dispensadores</TableCell>
+								<TableCell align="center">Nombre</TableCell>
+								<TableCell align="center">Registros</TableCell>
 								<TableCell align="right">Acciones</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{bathrooms.map((row) => {
-								
+							{sensors.map((row) => {
 							return (
 								<Row key={row.id} row={row} />
 							)})}
@@ -231,4 +228,4 @@ const BathroomDashboard = () => {
 	)
 }
 
-export default BathroomDashboard
+export default SensorsDashboard

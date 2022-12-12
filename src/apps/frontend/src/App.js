@@ -6,6 +6,7 @@ import AddBathroom from './pages/AddBathroom';
 // import Home from './components/Home';
 // import Event from './components/Event';
 import BathroomDashboard from './pages/BathroomDashboard';
+import SensorsDashboard from './pages/SensorsDashboard';
 
 function App() {
   return (
@@ -14,12 +15,7 @@ function App() {
           <Routes>
 			<Route path="/bathrooms" element={<BathroomDashboard /> } />
 			<Route path="/bathrooms/add" element={<AddBathroom /> } />
-
-
-            {/* <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="/events" element={<Event />} />
-            </Route> */}
+			<Route path="/sensors" element={<SensorsDashboard /> } />
           </Routes>
     </BrowserRouter>
   );
