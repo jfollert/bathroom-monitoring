@@ -1,0 +1,192 @@
+General
+
+
+
+.has-navbar-fixed-top {
+  padding-top: 64px;
+}
+
+.loading-spinner-size {
+  height: 3rem;
+  width: 3rem;
+}
+
+/* Navigation Bar */
+.img-brand {
+  width: 50px;
+  height: 50px;
+}
+
+
+
+:root {
+  --blue: rgb(26,57,87);
+  --white: rgb(236,236,236);
+  --purewhite: rgb(255,255,255);
+  --black: rgba(45, 45, 45);
+  --puredark: rgb(20,20,20);
+}
+
+body{
+  background: var(--background-color);
+  background-color: var(--backback-color);
+  color: var(--text-color);
+  transition: background 0.3s ease-in-out, color 0.6s ease-in-out;
+  /* background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); */
+}
+
+body.light {
+  --backback-color: var(--white);
+  --background-color: var(--purewhite);
+  --text-color: var(--puredark);
+  }
+
+body.dark {
+  --backback-color: var(--black);
+  --background-color: var(--puredark);
+  --text-color: var(--purewhite);
+}
+
+label{
+  color: var(--text-color);
+}
+
+label.light {
+  --text-color: var(--pureblack)
+}
+
+label.dark {
+  --text-color: var(--purewhite)
+}
+
+.nav-link {
+  color: black;
+}
+
+.navbar {
+  --bs-navbar-padding-x: 0;
+  --bs-navbar-padding-y: 0;
+}
+
+.container-fluid {
+  background-color: rgb(205, 209, 214);
+}
+
+.username-badge-points {
+  font-size: 15px;
+  width: 100px;
+  height: 30px;
+  /* color: var(--text-color); */
+  background-color: var(--backback-color);
+}
+
+.username-badge {
+  font-size: 15px;
+  width: 100px;
+  height: 35px;
+  color: white;
+  background-color: green;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Card-indiv-show {
+  text-align: center;
+  height: 100%;
+  background-color: var(--background-color);
+  border-color: var(--text-color);
+}
+
+.available-text {
+  margin-top: 3%;
+}
+
+.form-select {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.table {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.table-impair {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.initial-guest {
+  background-color: var(--backback-color);
+}
+
+.interact-graph {
+  background-color: var(--background-color);
+}
+
+.edit-profile-container {
+  background: var(--background-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background 0.3s ease-in-out, color 0.6s ease-in-out;
+}
+
+.edit-profile-container.light {
+  --backback-color: var(--white);
+  --background-color: var(--purewhite);
+  --text-color: var(--puredark);
+}
+
+.edit-profile-container.dark {
+  --backback-color: var(--black);
+  --background-color: var(--puredark);
+  --text-color: var(--purewhite);
+}
+
+.user-details .input-box input{
+  color: lightslategray;
+}
+
+.gender {
+  color: lightslategray;
+}
+
+.paises {
+  color: lightslategray;
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.card {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.search {
+  color:lightslategray;
+}
+
+.custom-container.right-panel-active .sign-up-container {
+  color: black;
+}
+
+.sign-in-container {
+  color: black;
+}
+
+.accordion-button.collapsed {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.accordion-body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.searchtoolx {
+  color:lightslategray;
+}
