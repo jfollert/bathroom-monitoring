@@ -70,7 +70,7 @@ function Rowto(props) {
 	const [openNewDispenserDialog, setOpenNewDispenserDialog] = useState(false);
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 	const newDispenserSensorInputRef = useRef()
-	const [emptys, setEmpty] = useState(false);
+	const [emptys, setEmpty] = useState([]);
 	const [numbersensors,setSensors] = useState(false);
 	const [numberactive, setActive] = useState(false);
 
@@ -203,7 +203,7 @@ function Rowto(props) {
         <TableBody>
           {emptys.map((row) => (
             <TableRow
-              key={row.building}
+              key={row.sensorId}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
