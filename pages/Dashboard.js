@@ -112,7 +112,7 @@ function Rowto(props) {
 			let emptysensors = []
 			for (const element of data) {
 				for (const count of element.dispensers) {
-					if (count.status === "UNKNOWN"){
+					if (count.status === "EMPTY"){
 						emptysensors.push(createData(element.building,element.floor, count.sensorId))
 					}
 				}
@@ -144,7 +144,6 @@ function Rowto(props) {
 			setActive(totalactive)
 		}
 
-		
 		getData()
 
 		getDataSensor()
@@ -309,5 +308,4 @@ const Dashboard = () => {
 		</Box>
 	)
 }
-
 export default Dashboard
