@@ -29,7 +29,7 @@ sam deploy --guided
 
 ## How to Simulate
 ```bash
-export API_URL=<api-url>
+export API_URL=https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev
 ```
 
 ```bash
