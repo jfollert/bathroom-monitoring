@@ -101,7 +101,7 @@ function Row(props) {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				value: value,
+				value: parseInt(value),
 			}),
 		});
 		handleCloseNewRecordDialog();
@@ -270,7 +270,7 @@ const SensorsDashboard = () => {
 	}
 
 	const navigate = useNavigate();
-		
+
 	useEffect(() => {
 		const getData = async () => {
 			const response = await fetch('https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/')
