@@ -23,7 +23,9 @@ while(True):
     "value": valor,
     }
     medicion_uuid = uuid.uuid4()
-    respuesta = requests.put(sensor_url+str(medicion_uuid), json=medicion)
+    endpoint = sensor_url+'records/'+str(medicion_uuid)
+
+    respuesta = requests.put(endpoint, json=medicion)
     if valor == 0:
         print("Sensor: " + str(sys.argv[1]), medicion, respuesta )
 
