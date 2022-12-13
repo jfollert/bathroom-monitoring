@@ -75,21 +75,22 @@ function Row(props) {
 		setOpenNewDispenserDialog(false);
 	};
 
-	const handleNewDispenser = async (sensorId, value) => {
+	const handleNewDispenser = async (bathroomId, sensorId) => {
 		const id = uuidv4();
 		console.log("New dispenser:", id);
-		// console.log("Sensor:", sensorId);
-		// console.log("Value:", value);
-		// const response = await fetch(`https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/sensors/${sensorId}/records/${id}`, {
-		// 	method: 'PUT',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 	},
-		// 	body: JSON.stringify({
-		// 		value: value,
-		// 	}),
-		// });
-		// handleCloseNewRecordDialog();
+		console.log("bathroomId:", bathroomId);
+		console.log("sensorId:", sensorId);
+		const response = await fetch(`https://wwocq05mxf.execute-api.sa-east-1.amazonaws.com/dev/bathrooms/${bathroomId}/dispensers/${id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				sensorId: sensorId,
+				status: "UNKNOWN"
+			}),
+		});
+		handleCloseNewDispenserDialog();
 	};
   
 	return (
